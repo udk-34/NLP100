@@ -1,0 +1,31 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+open(TEXTFILE, "< medline.txt.sent.tok")) or die("error :$!");
+
+my %bigram_hash;
+while (my $tok = <TEXTFILE>){
+    chomp($tok);
+    my @split_tok = split /\t/,$tok;
+    my @characters = split //, $split_tok[1];
+    foreach (0..length($split_tok[1])-2){
+        my $bigram = "$characters[$_]$characters[$_+1]"
+        if (exists $bigram){
+            $bigram_hash{$bigram}++;
+        }else{
+            $bigram_hash{$bigram} = 1;
+        }
+    }
+   
+}
+
+my $rank = 1;
+foreach my $key (sort { $bigram_hash{$b} <=> $bigram_hash{$a} } keys %bigram_hash){
+    print "$rank : $key : $bigram_hash{$key}\n";
+    last if $rank == 100;
+    $rank++;
+}
+
+exit;
