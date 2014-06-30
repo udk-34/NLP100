@@ -1,0 +1,15 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+open(TEXTFILE, "< english.txt.sent.word")) or die("error :$!");
+
+while (my $word = <TEXTFILE>){
+    chomp($word);
+    my $nomalized_word = $word;
+    $nomalized_word =~ s/[A-Z]/[a-z]/g;
+    print "$word\t$nomalized_word\n";
+}
+
+exit;
