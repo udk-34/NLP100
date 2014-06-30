@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use utf8;
 
-open(TEXTFILE, "< medline.txt")) or die("error :$!");
+open(TEXTFILE, "< english.txt")) or die("error :$!");
 
 while (my $text = <TEXTFILE>){
     chomp($text);
