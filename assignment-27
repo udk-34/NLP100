@@ -1,0 +1,29 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+open(TEXTFILE, "< english.txt.sent.tok")) or die("error :$!");
+
+my %ness;
+my %ly;
+my @words;
+while (my $tok = <TEXTFILE>){
+    chomp($tok);
+    my @split_tok = split /\t/,$tok;
+    if($split_tok[1] =~ /\A.+ness\Z/){
+        my $word = substr($split_tok[1], 0, length($word)-4 );
+        push @words, $word;
+        $ness{$word} = 1;
+    }elsif($split_tok[1] =~ /\A.+ly\Z/){
+        my $word = substr($split_tok[1], 0, length($word)-2 );
+        push @words, $word;
+        $ly{$word} = 1;
+    }else{
+        push @words, $split_tok[1];
+    }
+}
+
+foreach my $word (@words){
+    print "$word\n"if exsist $ness{$word} && exsist $ly{$word};
+}
