@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use utf8;
 
-open(TEXTFILE, "< medline.txt.sent.tok")) or die("error :$!");
+open(TEXTFILE, "< english.txt.sent.tok")) or die("error :$!");
 
 my %bigram_hash;
 while (my $tok = <TEXTFILE>){
@@ -18,7 +18,6 @@ while (my $tok = <TEXTFILE>){
             $bigram_hash{$bigram} = 1;
         }
     }
-   
 }
 
 my $rank = 1;
