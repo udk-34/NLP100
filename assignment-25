@@ -1,0 +1,20 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+open(TEXTFILE, "< english.txt.sent")) or die("error :$!");
+
+while (my $word = <TEXTFILE>){
+    chomp($word);
+    my @characters = split //, $word;
+    if ($characters[-1] =~ /\w/ || $characters[-1] ne '_') {
+        my $output_word = substr($word, 0, length($word)-1 );
+        print "$output_word\n$characters[-1]\n";
+    }else{
+        print "$word\n";
+    }
+    print "\n";
+}
+
+exit;
