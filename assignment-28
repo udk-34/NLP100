@@ -1,0 +1,26 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+open(TEXTFILE, "< english.txt.sent.tok")) or die("error :$!");
+
+my %words;
+while (my $tok = <TEXTFILE>){
+    chomp($tok);
+    my @split_tok = split /\t/,$tok;
+    if (exists $word{$split_tok[1]}){
+        $word{$split_tok[1]}++;
+    }else{
+        $word{$split_tok[1]} = 1;
+    }
+}
+
+my $rank = 1;
+foreach my $key (sort { $words{$b} <=> $words{$a} } keys %words){
+    print "$rank : $key : $words{$key}\n";
+    last if $rank == 100;
+    $rank++;
+}
+
+exit;
