@@ -1,0 +1,19 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+use Python::Serialise::Marshal;
+
+my $pr = Python::Serialise::Marshal->new("dic");
+my $dict = $pr->load();
+
+open(TEXTFILE, "< medline.txt.sent.tok.stem")) or die("error :$!");
+
+
+my @nil_words;
+while (my $stem = <TEXTFILE>){
+    push @nill_words, $stem unless exsists $dict->{$stem};
+}
+
+map { print "$_\n" } @nil_words;
