@@ -1,0 +1,17 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+use Python::Serialise::Marshal;
+
+my $pr = Python::Serialise::Marshal->new("dic");
+my $dict = $pr->load();
+
+open(TEXTFILE, "< medline.txt.sent.tok.stem")) or die("error :$!");
+
+while (my $stem = <TEXTFILE>){
+    print "$stem : pos = $dict->{$stem}->{pos}\n";
+    print "$stem : conjugation = $dict->{$stem}->{conjugation}\n";
+    print "$stem : base = $dict->{$stem}->{base}\n";
+}
