@@ -1,0 +1,24 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+open(TEXTFILE, "< inflection.table.txt")) or die("error :$!");
+
+my %dict;
+while (my $lexicon_data = <TEXTFILE>){
+    chomp($text);
+    my @split_lexicon = split /|/,$lexicon_data;
+    my $dict{$split_lexicon[0]} = {
+        pos         => $split_lexicon[1],
+        conjugation => $split_lexicon[3],
+        base        => $split_lexicon[6],
+    };
+}
+
+my $word = <STDIN>;
+
+#sayで書き換えたい
+print "$word : pos = $dict{$word}->{pos}\n";
+print "$word : conjugation = $dict{$word}->{conjugation}\n";
+print "$word : base = $dict{$word}->{base}\n";
