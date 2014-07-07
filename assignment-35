@@ -23,7 +23,7 @@ while (my $lexicon_data = <TEXTFILE>){
 
 my @over_three_appeared_words;
 while (my $stem = <TEXTFILE>){
-    push @over_three_appeared_words, $stem if exsists $dict->{$stem} && $dict->{$stem}->{count} >= 3;
+    push @over_three_appeared_words, $stem if exsists $dict{$stem} && $dict{$stem}->{count} >= 3;
 }
 
 map { print "$_\n" } @over_three_appeared_words;
