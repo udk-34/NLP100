@@ -1,0 +1,29 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+open(TEXTFILE, "< inflection.table.txt")) or die("error :$!");
+
+my %dict;
+while (my $lexicon_data = <TEXTFILE>){
+    chomp($text);
+    my @split_lexicon = split /|/,$lexicon_data;
+    if(exists $dict{$split_lexicon[0]}){
+        $dict{$split_lexicon[0]}->{count} += 1;
+    }else {
+        $dict{$split_lexicon[0]} = {
+            pos         => $split_lexicon[1],
+            conjugation => $split_lexicon[3],
+            base        => $split_lexicon[6],
+            count       => 1,
+        };
+    }
+}
+
+my @over_three_appeared_words;
+while (my $stem = <TEXTFILE>){
+    push @over_three_appeared_words, $stem if exsists $dict->{$stem} && $dict->{$stem}->{count} >= 3;
+}
+
+map { print "$_\n" } @over_three_appeared_words;
