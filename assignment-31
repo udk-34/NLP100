@@ -9,7 +9,7 @@ my %dict;
 while (my $lexicon_data = <TEXTFILE>){
     chomp($text);
     my @split_lexicon = split /|/,$lexicon_data;
-    my $dict{$split_lexicon[0]} = {
+    $dict{$split_lexicon[0]} = {
         pos         => $split_lexicon[1],
         conjugation => $split_lexicon[3],
         base        => $split_lexicon[6],
