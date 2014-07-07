@@ -1,0 +1,26 @@
+#script/perl
+use strict;
+use warnings;
+use utf8;
+
+use Python::Serialise::Marshal;
+
+open(TEXTFILE, "< inflection.table.txt")) or die("error :$!");
+
+my %dict;
+while (my $lexicon_data = <TEXTFILE>){
+    chomp($text);
+    my @split_lexicon = split /|/,$lexicon_data;
+    my $dict{$split_lexicon[0]} = {
+        pos         => $split_lexicon[1],
+        conjugation => $split_lexicon[3],
+        base        => $split_lexicon[6],
+    };
+}
+
+close(TEXTFILE);
+
+my $pw = Python::Serialise::Marshal->new(">dic");
+
+$pw->dump(%dict);
+$pw->close();
