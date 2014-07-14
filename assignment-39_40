@@ -1,0 +1,29 @@
+#script/perl
+use strict;
+use warnings;
+use 5.010;
+use utf8;
+
+open(TEXTFILE, "< concat_prob.txt")) or die("error :$!");
+
+my %concat_prob;
+while (my $concat_data = <TEXTFILE>){
+    chomp($concat_data);
+    my @splited_concat_data = split /\t/,$concat_data, 2;
+    $concat_prob{"$splited_concat_data[1]"} = $splited_concat_data[0];
+}
+
+my $input_text = <STDIN>;
+my @split_text = split /\s+/, $input_text;
+my $occurrence_prob = 1;
+my $before_word = shift @split_text;
+foreach my $word (@split_text) {
+    unless ( exists $concat_prob{"$before_word\t$word"} ) {
+        $occurrence_prob = 0;
+        last;
+    }
+
+    $occurrence_prob = $occurrence_prob * $concat_prob{"$before_word\t$word"};
+}
+
+say "$input_text : $occurrence_prob";
