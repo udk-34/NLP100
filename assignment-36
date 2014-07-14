@@ -1,0 +1,14 @@
+#script/perl
+use strict;
+use warnings;
+use 5.010;
+use utf8;
+
+open(TEXTFILE, "< medline.txt.sent.tok")) or die("error :$!");
+
+my $before_word = <TEXTFILE>;
+while (my $word = <TEXTFILE>){
+    chomp($word);
+    say "$before_word\t$word";
+    $before_word = $word;
+}
