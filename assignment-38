@@ -1,0 +1,41 @@
+#script/perl
+use strict;
+use warnings;
+use 5.010;
+use utf8;
+#P(z|w) = P(z∩w)/P(w)
+#P(z∩w) = w,zの順で連接した数 / 総連接数
+#P(w) = wの総数 / 総単語数
+
+open(TEXTFILE, "< medline.txt.sent.tok")) or die("error :$!");
+
+my %concat_freq;
+my %word_freq;
+my $before_word = <TEXTFILE>;
+$word_freq{"$before_word"} = 1;
+my $word_count = 1;
+while (my $word = <TEXTFILE>){
+    chomp($word);
+    if ( exists $concat_freq{"$before_word\t$word"} ) {
+        $concat_freq{"$before_word\t$word"}++;
+    else {
+        $concat_freq{"$before_word\t$word"} = 1;
+    }
+
+    if ( exists $word_freq{"$word"} ) {
+        $word_freq{"$word"}++;
+    else {
+        $word_freq{"$word"} = 1;
+    }
+
+    $before_word = $word;
+    $word_count++;
+}
+
+while (my ($key, $value) = each(%concat_freq)){
+    my $wz_ratio = $value / ( $word_count - 1 );
+    my @concat_word = split /\t/, $key;
+    my $w_ratio  = $word_freq{$concat_word[0]} / $word_count;
+    my $p_zw = $wz_ratio / $w_ratio;
+    say "$p_zw\t$key";
+}
