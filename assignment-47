@@ -4,7 +4,7 @@ nlp100_4
 
 =head1 SYNOPSIS
 
-    %perl nlp100_41.pl [--verb] [-h]
+    %perl nlp100_47.pl [--verb] [-h]
 
 =cut
 
