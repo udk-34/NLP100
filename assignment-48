@@ -1,0 +1,39 @@
+#script/perl
+use strict;
+use warnings;
+use 5.010;
+use utf8;
+
+use Text::MeCab;
+
+my $parser = Text::MeCab->new;
+
+open(TEXTFILE, "< japanese.txt")) or die("error :$!");
+
+my %words;
+my %verbs;
+while (my $line = <TEXTFILE>){
+    chomp($line);
+    my @sentence;
+    for(my $node = $parser->parse($line); $node; $node = $node->next) {
+        my $surface = $node->surface;
+        if ( exists $words{$surface} ) {
+            $words{$surface}++;
+        else {
+            $words{$surface} = 1;
+        }
+
+        my @features = split /,/, $node->feature;
+
+        if($features[0] =~ /動詞/){
+            if ( exists $words{$surface} ) {
+                $verbs{$surface}++;
+            else {
+                $verbs{$surface} = 1;
+            }
+        }
+    }
+}
+
+sort {$words{$a} <=> $words{$b}} keys %words;
+sort {$verbs{$a} <=> $verbs{$b}} keys %verbs;
