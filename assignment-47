@@ -44,13 +44,13 @@ while (my $line = <TEXTFILE>){
         my @features = split /,/, $encoding->decode($node->feature);
         my $morpheme = {
             surface => $encoding->decode($node->surface),
-            base => $features[6],
-            pos  => $features[0],
-            pos1 => $features[1],       
+            base => $encoding->decode($features[6]),
+            pos  => $encoding->decode($features[0]),
+            pos1 => $encoding->decode($features[1]),       
         };
         push @sentence, $morpheme;
 
-        if($verb && $features[0] =~ /^動詞/){
+        if($verb && $encoding->decode(($features[0]) =~ /^動詞/){
             my $word = $node->surface;
             say "$word";
         }
