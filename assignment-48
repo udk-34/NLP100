@@ -25,7 +25,7 @@ while (my $line = <TEXTFILE>){
 
         my @features = split /,/, $node->feature;
 
-        if($features[0] =~ /動詞/){
+        if($features[0] =~ /^動詞/){
             if ( exists $words{$surface} ) {
                 $verbs{$surface}++;
             else {
