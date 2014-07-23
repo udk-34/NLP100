@@ -20,6 +20,7 @@ use Pod::Usage qw/pod2usage/;
 #http://d.hatena.ne.jp/mrgoofy33/20110406/1302019908
 #http://teahut.sakura.ne.jp/b/2007-07-05-1.html
 use Text::MeCab;
+use Encode;
 
 my $help = 0;
 my $verb = 0;
@@ -31,6 +32,7 @@ GetOptions(
 pod2usage(1) if $help;
 
 my $parser = Text::MeCab->new;
+my $encoding = Encode::find_encoding( Text::MeCab::ENCODING );
 
 open(TEXTFILE, "< japanese.txt")) or die("error :$!");
 
@@ -38,10 +40,10 @@ my %verbs;
 while (my $line = <TEXTFILE>){
     chomp($line);
     my @sentence;
-    for(my $node = $parser->parse($line); $node; $node = $node->next) {
-        my @features = split /,/, $node->feature;
+    for(my $node = $parser->parse($encoding->encode($line)); $node; $node = $node->next) {
+        my @features = split /,/, $encoding->decode($node->feature);
         my $morpheme = {
-            surface => $node->surface,
+            surface => $encoding->decode($node->surface),
             base => $features[6],
             pos  => $features[0],
             pos1 => $features[1],       
