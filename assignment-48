@@ -35,5 +35,5 @@ while (my $line = <TEXTFILE>){
     }
 }
 
-sort {$words{$a} <=> $words{$b}} keys %words;
-sort {$verbs{$a} <=> $verbs{$b}} keys %verbs;
+sort {$words{$b} <=> $words{$a}} keys %words;
+sort {$verbs{$b} <=> $verbs{$a}} keys %verbs;
