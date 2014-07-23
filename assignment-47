@@ -50,7 +50,7 @@ while (my $line = <TEXTFILE>){
         };
         push @sentence, $morpheme;
 
-        if($verb && $features[0] =~ /動詞/){
+        if($verb && $features[0] =~ /^動詞/){
             my $word = $node->surface;
             say "$word";
         }
