@@ -28,7 +28,7 @@ while (my $line = <TEXTFILE>){
 
         my @features = split /,/, $encoding->decode($node->feature);
 
-        if($features[0] =~ /^動詞/){
+        if($encoding->decode($features[0]) =~ /^動詞/){
             if ( exists $words{$surface} ) {
                 $verbs{$surface}++;
             else {
