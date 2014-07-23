@@ -5,8 +5,10 @@ use 5.010;
 use utf8;
 
 use Text::MeCab;
+use Encode;
 
 my $parser = Text::MeCab->new;
+my $encoding = Encode::find_encoding( Text::MeCab::ENCODING );
 
 open(TEXTFILE, "< japanese.txt")) or die("error :$!");
 
@@ -15,15 +17,15 @@ my %verbs;
 while (my $line = <TEXTFILE>){
     chomp($line);
     my @sentence;
-    for(my $node = $parser->parse($line); $node; $node = $node->next) {
-        my $surface = $node->surface;
+    for(my $node = $parser->parse($encoding->encode($line)); $node; $node = $node->next) {
+        my $surface = $encoding->decode($node->surface);
         if ( exists $words{$surface} ) {
             $words{$surface}++;
         else {
             $words{$surface} = 1;
         }
 
-        my @features = split /,/, $node->feature;
+        my @features = split /,/, $encoding->decode($node->feature);
 
         if($features[0] =~ /^動詞/){
             if ( exists $words{$surface} ) {
