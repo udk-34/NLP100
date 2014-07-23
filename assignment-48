@@ -4,6 +4,7 @@ use warnings;
 use 5.010;
 use utf8;
 
+#http://perl-users.jp/articles/advent-calendar/2010/acme/21
 use Text::MeCab;
 use Encode;
 
