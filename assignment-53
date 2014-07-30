@@ -1,0 +1,47 @@
+sub get_from_list {
+    my $tree = shift;
+
+    my %chunk_from_to;
+    for (my $i = 0; $i < $tree->chunk_size; $i++) {
+        my $chunk = $tree->chunk($i);
+        if( $chunk->{link} > 0) {
+            if (exists $chunk_from_to{$chunk->{link}}){
+                $chunk_from_to{$chunk->{link}} .= ",$i";
+            }else{
+                $chunk_from_to{$chunk->{link}} = "$i";
+            }
+        }else{
+            $chunk_from_to{$i} = "";
+        }
+    }
+
+    return \%chunk_from_to;
+}
+
+
+package Chunk;
+
+sub new {
+    my ( $class, $chunk, $to_chunk ) = @_;
+
+    my @token_data;
+    for(my $i = 0; $j < $chunk->{token_size}; $i++){
+        my $token = $tree->token($i);
+        my @features = split /,/ decode_utf8($token->{feature});
+        push @token_data, {
+            surface => $token->{surface},
+            base    => $features[6],
+            pos     => $features[0],
+            pos1    => $features[1]
+        }
+    }
+
+    my $self = {
+        morphs => \@token_data,
+        dst  => $chunk->{link},
+        srcs => 
+    };
+    return bless $self, $class;
+}
+
+1;
