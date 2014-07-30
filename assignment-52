@@ -1,0 +1,16 @@
+package Morph;
+
+sub new {
+    my ( $class, $morph ) = @_;
+    my @morph_item = split /\s+/, $morph;
+    my @features   = split /,/, $morph_item[1];
+    my $self = {
+        surface => $morph_item[0],
+        base    => $features[6],
+        pos     => $features[0],
+        pos1    => $features[1]
+    };
+    return bless $self, $class;
+}
+
+1;
