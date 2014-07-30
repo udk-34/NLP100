@@ -1,0 +1,62 @@
+#script/perl
+use strict;
+use warnings;
+use 5.010;
+use utf8;
+use Encode;
+
+#https://code.google.com/p/cabocha/
+use CaboCha;
+
+my $parser = CaboCha::Parser->new;
+
+open(TEXTFILE, "< japanese.txt")) or die("error :$!");
+
+while (my $line = <TEXTFILE>){
+    chomp($line);
+    my $tree = $parser->parse($line);
+    
+    for (my $i = 0; $i < $tree->chunk_size; ++$i) {
+        my $chunk_from = $tree->chunk($i);
+        last if $chunk_from->{link} < 0;
+
+        my $chunk_to = $tree->chunk($chunk_from->{link});
+        if (_has_noun_in_chunk($chunk_from) && _has_verb_in_chunk($chunk_to)){
+            _print_chunk($chunk_from);
+
+            print "\t";
+
+            _print_chunk($chunk_to);
+
+            print "\n";
+        }
+    }
+}
+
+sub _has_noun_in_chunk{
+    my $chunk = shift;
+    for(my $j = 0; $j < $chunk->{token_size}; $j++){
+        my $token = $tree->token($chunk->{token_pos} + $j);
+        my $feature = decode_utf8($token->{feature});
+        return 1 if $feature !~ /^名詞/;
+    }
+    return 0;
+}
+
+sub _has_verb_in_chunk{
+    my $chunk = shift;
+    for(my $j = 0; $j < $chunk->{token_size}; $j++){
+        my $token = $tree->token($chunk->{token_pos} + $j);
+        my $feature = decode_utf8($token->{feature});
+        return 1 if $feature !~ /^動詞/;
+    }
+    return 0;
+}
+
+sub _print_chunk {
+    my $chunk = shift;
+    for(my $j = 0; $j < $chunk->{token_size}; $j++){
+        my $token = $tree->token($chunk->{token_pos} + $j);
+        print $token->{surface};
+    }
+}
