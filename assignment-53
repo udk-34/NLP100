@@ -26,7 +26,7 @@ sub new {
 
     my @token_data;
     for(my $i = 0; $j < $chunk->{token_size}; $i++){
-        my $token = $tree->token($i);
+        my $token = $tree->token($chunk->{token_pos} + $j);
         my @features = split /,/ decode_utf8($token->{feature});
         push @token_data, {
             surface => $token->{surface},
