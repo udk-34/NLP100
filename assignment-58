@@ -1,0 +1,61 @@
+#script/perl
+use strict;
+use warnings;
+use 5.010;
+use utf8;
+use Encode;
+
+#https://code.google.com/p/cabocha/
+use CaboCha;
+
+my $parser = CaboCha::Parser->new;
+
+open(TEXTFILE, "< japanese.txt")) or die("error :$!");
+
+while (my $line = <TEXTFILE>){
+    chomp($line);
+    my $tree = $parser->parse($line);
+    
+    my $from_to_data = _get_from_to_data($tree);
+
+    for (my $i = 0; $i < $tree->chunk_size; ++$i) {
+        my @from_chunks = split /,/, $from_to_data->{$i};
+        if (scalar(@to_chunk) > 1 ){
+            my $chunk_to = $tree->chunk($i);
+            foreach my $chunk_index (@from_chunks){
+                _print_chunk($chunk_to);
+                print "\t";
+                _print_chunk($tree->chunk($chunk_index));
+                print "\n";
+            }
+        }
+    }
+}
+
+sub _get_from_to_data {
+    my $tree = shift;
+
+    my %chunk_from_to;
+    for (my $i = 0; $i < $tree->chunk_size; $i++) {
+        my $chunk = $tree->chunk($i);
+        if( $chunk->{link} > 0) {
+            if (exists $chunk_from_to{$chunk->{link}}){
+                $chunk_from_to{$chunk->{link}} .= ",$i";
+            }else{
+                $chunk_from_to{$chunk->{link}} = "$i";
+            }
+        }else{
+            $chunk_from_to{$i} = "";
+        }
+    }
+
+    return \%chunk_from_to;
+}
+
+sub _print_chunk {
+    my $chunk = shift;
+    for(my $j = 0; $j < $chunk->{token_size}; $j++){
+        my $token = $tree->token($chunk->{token_pos} + $j);
+        print $token->{surface};
+    }
+}
