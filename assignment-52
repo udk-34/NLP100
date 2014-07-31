@@ -1,4 +1,10 @@
 package Morph;
+use strict;
+use warnings;
+use 5.010;
+
+use parent qw(Class::Accessor::Fast);
+__PACKAGE__->mk_accessors(qw/ surface base pos pos1 /);
 
 sub new {
     my ( $class, $morph ) = @_;
